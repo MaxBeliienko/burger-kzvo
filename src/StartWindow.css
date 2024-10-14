@@ -1,0 +1,40 @@
+body {
+    user-select: none; /* За замовчуванням забороняє виділення тексту */
+    -webkit-user-select: none; /* Для браузерів на основі WebKit (Chrome, Safari) */
+    -moz-user-select: none; /* Для Firefox */
+    -ms-user-select: none; /* Для Internet Explorer/Edge */
+}
+
+
+.start-window {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.advertisement {
+    width: 100%;
+    height: 100%;
+    background-image: url('./assets/payment.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.start-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 350px;
+    font-size: 100px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    background-color: #fda500;
+    color: #fff;
+    text-align: center;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}

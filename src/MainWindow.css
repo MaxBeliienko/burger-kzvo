@@ -1,0 +1,413 @@
+body {
+    user-select: none; /* За замовчуванням забороняє виділення тексту */
+    -webkit-user-select: none; /* Для браузерів на основі WebKit (Chrome, Safari) */
+    -moz-user-select: none; /* Для Firefox */
+    -ms-user-select: none; /* Для Internet Explorer/Edge */
+}
+
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.categories-container {
+    flex: 1;
+    margin-right: 250px;
+}
+
+.products-container {
+    flex: 1;
+    margin-right: 250px;
+}
+
+.cart-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+}
+
+.category,
+.product {
+    flex: 0 0 30%;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 20px;
+    position: relative;
+    background-color: transparent;
+    max-width: 350px;
+    min-width: 350px;
+    max-height: 220px;
+    min-height: 220px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.center {
+    padding: 60px;
+}
+
+.category img {
+    max-width: 60%;
+    height: 40%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.product img {
+    max-width: 60%;
+    height: 40%;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.shopping-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.selected-category {
+    color: #fda500;
+}
+
+@media (max-width: 1920px) and (max-height: 1080px) {
+    .shopping-cart {
+        max-height: 800px;
+    }
+}
+
+.shopping-cart ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.shopping-cart .cart-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.shopping-cart .cart-item:last-child {
+    border-bottom: none;
+}
+
+.shopping-cart .cart-item-image {
+    max-width: 60px;
+    margin-right: 10px;
+}
+
+.shopping-cart .total {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shopping-cart .total-text {
+    margin-bottom: -5px;
+}
+
+.shopping-cart .total-amount {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.shopping-cart .quantity-container {
+    display: flex;
+    align-items: center;
+}
+
+.shopping-cart .delete-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.shopping-cart .delete-button:hover {
+    background-color: #ddd;
+}
+
+
+.shopping-cart .quantity-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.shopping-cart .quantity-btn:hover {
+    background-color: #ddd;
+}
+
+@media (max-width: 1080px) and (max-height: 1920px) {
+    .shopping-cart {
+        max-height: 1650px;
+        font-size: 26px;
+    }
+
+    .shopping-cart .cart-item-image {
+        max-width: 130px;
+    }
+
+    .shopping-cart .total {
+        position: absolute;
+        bottom: 85px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shopping-cart .total-text {
+        font-size: 36px;
+        width: 280px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        text-align: center;
+    }
+
+    .shopping-cart .total-amount {
+        font-size: 42px;
+        width: 100%;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        text-align: center;
+    }
+
+    .cart-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 315px;
+        background-color: #f0f0f0;
+        overflow-y: auto;
+    }
+
+    .categories-container {
+        margin-top: 20px;
+    }
+
+    .category,
+    .product {
+        flex: 0 0 30%;
+        cursor: pointer;
+        text-align: center;
+        border: 1px solid #ddd;
+        font-size: 25px;
+        position: relative;
+        background-color: transparent;
+        max-width: 300px;
+        min-width: 300px;
+        max-height: 265px;
+        min-height: 265px;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        border-radius: 20px;
+    }
+
+    .category img {
+        max-width: 75%;
+        height: 50%;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .product img {
+        max-width: 72%;
+        height: 50%;
+        margin: 0 auto;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .shopping-cart .quantity-container {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+    }
+
+    .shopping-cart .quantity-btn {
+        background-color: #f0f0f0;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .shopping-cart .cart-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        font-size: 25px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .product-price {
+        font-size: 27px;
+        font-weight: 700;
+    }
+
+    .product-name {
+        font-size: 27px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .category {
+        font-size: 30px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-weight: 700;
+    }
+
+    .order-name {
+        hyphens: auto;
+    }
+
+    .payment-container {
+        position: absolute;
+        bottom: 25px;
+    }
+
+    .pay-button {
+        font-size: 36px;
+        padding: 15px 50px;
+        background-color: #fda500;
+        color: white;
+        border: 2px solid #fda500;
+        border-radius: 20px;
+    }
+
+    .disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        border: none;
+    }
+
+    .back-button {
+        background-color: transparent;
+        border: none;
+        color: #333333;
+        font-size: 55px;
+        font-weight: 700;
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        z-index: 998;
+        display: flex;
+        align-items: center;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .back-button svg {
+        margin-right: 10px;
+    }
+
+    .selected-category {
+        background-color: #fda500;
+        color: #fff;
+    }
+
+    .selected-product {
+        border: 1px solid #fda500;
+
+    }
+
+    .shopping-cart .delete-button {
+        background-color: #f0f0f0;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 30px;
+        color: red;
+    }
+
+    .shopping-cart .delete-button:hover {
+        background-color: #ddd;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+        z-index: 999;
+    }
+
+    .modal-content {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background-color: white;
+    }
+
+    .modal-background {
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .modal-button {
+        background-color: #fda500;
+        color: #fff;
+        padding: 10px 50px;
+        border: 1px solid #fda500;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 32px;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-header {
+        padding: 30px;
+        font-size: 45px;
+        font-weight: 300;
+    }
+
+    .slick-dots {
+        left: 47%;
+        top: 94%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+
+    .slick-dots li.slick-active button:before {
+        background-color: #fda500;
+        border-radius: 10px;
+    }
+}
