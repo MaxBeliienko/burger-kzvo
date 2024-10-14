@@ -1,38 +1,52 @@
 import React, { useState, useRef, useEffect } from "react";
+import "./IngredientsModal.css";
 
 const IngredientsModal = ({ product, onClose, addToCart }) => {
   const [ingredients, setIngredients] = useState([]);
-  console.log(product);
   useEffect(() => {
-    if (product && product.group_modifications) {
+    if (product && Array.isArray(product.group_modifications)) {
       // Отримуємо інгредієнти з об'єкта product
       const mods = product.group_modifications.flatMap(
         (group) => group.modifications
       );
-      setIngredients(mods);
+      const modsWithAmounts = mods.map((mod) => ({
+        ...mod,
+        amount: 0, // Встановлюємо початкову кількість інгредієнта
+      }));
+      setIngredients(modsWithAmounts);
     }
   }, [product]);
 
-  const handleRemoveIngredient = (ingredientId) => {
-    // Видаляємо інгредієнт зі списку
-    const updatedIngredients = ingredients.filter(
-      (ingredient) => ingredient.modification_id !== ingredientId
+  const handleQuantityChange = (ingredientId, change) => {
+    // Змінюємо кількість вибраного інгредієнта
+    const updatedIngredients = ingredients.map((ingredient) =>
+      ingredient.modification_id === ingredientId
+        ? { ...ingredient, amount: Math.max(0, ingredient.amount + change) }
+        : ingredient
     );
     setIngredients(updatedIngredients);
   };
 
   const handleAddToCart = () => {
-    const modifiedProduct = {
-      ...product,
-      group_modifications: product.group_modifications.map((group) => ({
-        ...group,
-        modifications: group.modifications.filter((mod) =>
-          ingredients.some((ing) => ing.modification_id === mod.modification_id)
-        ),
-      })),
+    if (!product || !product.group_modifications) {
+      addToCart(product); // Додаємо продукт без модифікацій
+      onClose(); // Закриваємо модальне вікно
+      return;
+    }
+
+    const selectedModifications = ingredients.map((ingredient) => ({
+      m: ingredient.dish_modification_id, // dish_modification_id
+      a: ingredient.amount, // кількість
+    }));
+
+    const productToSend = {
+      product_id: product.product_id, // Додаємо product_id
+      quantity: 1, // Кількість товару
+      modifications: selectedModifications, // обрані модифікації
     };
-    addToCart(modifiedProduct); // Додаємо до корзини продукт з модифікованими інгредієнтами
-    onClose(); // Закриваємо модальне вікно
+
+    addToCart(productToSend);
+    onClose();
   };
 
   return (
@@ -42,21 +56,44 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
         <h3>Інгредієнти</h3>
         <ul>
           {ingredients.map((ingredient) => (
-            <li key={ingredient.modification_id}>
-              {ingredient.modification_name}{" "}
-              <button
+            <li key={ingredient.ingredient_id}>
+              {ingredient.name}{" "}
+              {/* <button
                 onClick={() =>
                   handleRemoveIngredient(ingredient.modification_id)
                 }
               >
                 Видалити
-              </button>
+              </button> */}
+              <div className="quantity-controls">
+                <button
+                  className="quantity-btn"
+                  onClick={() =>
+                    handleQuantityChange(ingredient.modification_id, -1)
+                  }
+                >
+                  -
+                </button>
+                <span className="quantity-value">{ingredient.amount}</span>
+                <button
+                  className="quantity-btn"
+                  onClick={() =>
+                    handleQuantityChange(ingredient.modification_id, 1)
+                  }
+                >
+                  +
+                </button>
+              </div>
             </li>
           ))}
         </ul>
-        <div className="modal-buttons">
-          <button onClick={handleAddToCart}>Додати до кошика</button>
-          <button onClick={onClose}>Закрити</button>
+        <div className="modal-buttons-ing">
+          <button onClick={handleAddToCart} className="modal-button-add">
+            Додати до кошика
+          </button>
+          <button onClick={onClose} className="modal-button-close">
+            Закрити
+          </button>
         </div>
       </div>
     </div>

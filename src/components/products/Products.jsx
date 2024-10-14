@@ -5,14 +5,10 @@ import Slider from "react-slick";
 import axios from "axios";
 import "./Products.css";
 
-const Products = ({ selectedCategory, addToCart, openProductModal }) => {
+const Products = ({ selectedCategory, openProductModal }) => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const sliderRef = useRef(null);
-
-  const handleAddToCart = (product) => {
-    addToCart(product);
-  };
 
   const settings = {
     className: "center",
@@ -49,11 +45,6 @@ const Products = ({ selectedCategory, addToCart, openProductModal }) => {
               selectedProduct === product.product_name ? "selected-product" : ""
             }`}
             key={index}
-            // onClick={() => {
-            //   handleAddToCart(product);
-            //   setSelectedProduct(product.product_name);
-            //   setTimeout(() => setSelectedProduct(null), 100);
-            // }}
             onClick={() => openProductModal(product)}
           >
             <img src={product.photo} alt={product.product_name} />

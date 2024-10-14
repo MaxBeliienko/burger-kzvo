@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios";
 import "./Categories.css";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const Categories = ({ onSelectCategory, selectedCategory }) => {
   const [categories, setCategories] = useState([]);

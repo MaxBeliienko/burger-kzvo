@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./MainWindow.css";
 import { useNavigate } from "react-router-dom";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { FaAngleLeft } from "react-icons/fa6";
 import axios from "axios";
 import Categories from "./components/categories/Categories";
@@ -18,7 +16,7 @@ function MainWindow() {
   const [selectedProduct, setSelectedProduct] = useState(null); // Для відслідковування продукту в модалці
   const [selectedItems, setSelectedItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Для відкритя модалки модифікацій
 
   const navigate = useNavigate();
 
@@ -74,6 +72,7 @@ function MainWindow() {
     const orderData = {
       id: product.product_id,
       quantity: 1,
+      modifications: product.modifications,
     };
 
     axios
@@ -103,7 +102,6 @@ function MainWindow() {
       <div className="products-container">
         <Products
           selectedCategory={selectedCategory}
-          addToCart={handleAddToCart}
           openProductModal={handleOpenProductModal}
         />
       </div>
