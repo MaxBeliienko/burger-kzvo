@@ -58,13 +58,6 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
           {ingredients.map((ingredient) => (
             <li key={ingredient.ingredient_id}>
               {ingredient.name}{" "}
-              {/* <button
-                onClick={() =>
-                  handleRemoveIngredient(ingredient.modification_id)
-                }
-              >
-                Видалити
-              </button> */}
               <div className="quantity-controls">
                 <button
                   className="quantity-btn"

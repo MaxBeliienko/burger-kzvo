@@ -56,19 +56,31 @@
   border-radius: 5px;
   height: 66px;
   cursor: pointer;
-  background-color: #4caf50; /* Зелений колір кнопки */
+  background-color: #fda500;
   color: #fff;
+}
+
+.modal-button-add:hover,
+.modal-button-add:focus,
+.modal-button-add:active {
+  background-color: #fc6d04;
 }
 
 .modal-button-close {
   height: 66px;
 
   padding: 10px 20px;
-  border: none;
+  border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
-  background-color: red;
-  color: #fff;
+  background-color: transparent;
+  color: black;
+}
+
+.modal-button-close:hover,
+.modal-button-close:focus,
+.modal-button-close:active {
+  background-color: #ccc;
 }
 
 .quantity-controls {
@@ -82,6 +94,11 @@
   border: 1px solid #ccc;
   padding: 5px;
   cursor: pointer;
+}
+
+.quantity-btn:hover {
+  background-color: #ccc;
+  border: 1px solid #f0f0f0;
 }
 
 .quantity-value {
