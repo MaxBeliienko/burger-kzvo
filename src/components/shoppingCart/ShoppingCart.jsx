@@ -1,18 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import axios from "../../api";
 import { useNavigate } from "react-router-dom";
 import { BsTrash3Fill } from "react-icons/bs";
 import "./ShoppingCart.css";
+import { useTranslation } from "react-i18next";
 
 const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
       .get("/order")
       .then((response) => {
-        // console.log("Order data:", response.data);
+        console.log("Order data:", response.data);
         setCartItems(response.data.products);
         setTotal(response.data.totalPrice);
       })
@@ -29,7 +31,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
 
   const hasItemsInCart = selectedItems.length > 0;
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // модалка для видалення
   const [deleteIndex, setDeleteIndex] = useState(null);
 
   const handleDeleteItemWithModal = (item) => {
@@ -120,7 +122,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
 
   return (
     <div className="shopping-cart">
-      <h2>Ваше замовлення</h2>
+      <h2>{t("description.shoppingCart.Title")}</h2>
       <ul>
         {cartItems.map((item, index) => (
           <li key={item.productId} className="cart-item">
@@ -133,7 +135,10 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
               <div className="order-name" lang="uk">
                 {item.productName}
               </div>
-              <div>{item.price * item.count} ГРН</div>
+              <div>
+                {item.price * item.count}{" "}
+                {t("description.shoppingCart.Currency")}
+              </div>
               <div className="quantity-container">
                 <button
                   className="quantity-btn"
@@ -160,8 +165,12 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
         ))}
       </ul>
       <div className="total">
-        <p className="total-text">Сума замовлення:</p>
-        <p className="total-amount">{total} ГРН</p>
+        <p className="total-text">
+          {t("description.shoppingCart.OrderAmount")}:
+        </p>
+        <p className="total-amount">
+          {total} {t("description.shoppingCart.Currency")}
+        </p>
       </div>
       <div className="payment-container">
         <button
@@ -169,7 +178,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
           onClick={handlePayment}
           disabled={!hasItemsInCart}
         >
-          Оплатити
+          {t("description.shoppingCart.Pay")}
         </button>
       </div>
 
@@ -177,14 +186,14 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
         <div className={`modal active`}>
           <div className="modal-content">
             <p className="modal-header">
-              Ви впевнені, що хочете видалити товар?
+              {t("description.shoppingCart.SureRemove")}
             </p>
             <div className="modal-buttons">
               <button className="modal-button" onClick={handleConfirmDelete}>
-                Так
+                {t("description.shoppingCart.Yes")}
               </button>
               <button className="modal-button" onClick={handleCancelDelete}>
-                Ні
+                {t("description.shoppingCart.No")}
               </button>
             </div>
           </div>

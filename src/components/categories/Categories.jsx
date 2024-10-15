@@ -1,12 +1,13 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import axios from "axios";
+import axios from "../../api";
 import "./Categories.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const Categories = ({ onSelectCategory, selectedCategory }) => {
   const [categories, setCategories] = useState([]);
+  const sliderRef = useRef(null); // useRef для слайдера
 
   useEffect(() => {
     axios
@@ -18,6 +19,12 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
         console.error("Error fetching categories:", error);
       });
   }, []);
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(0); // Повертаємо слайдер на початок
+    }
+  }, [selectedCategory]); // Спрацьовує після вибору категорії
 
   const settings = {
     className: "center",
@@ -31,7 +38,7 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
 
   return (
     <div className="carousel-container">
-      <Slider {...settings}>
+      <Slider {...settings} ref={sliderRef}>
         {categories.map((category, index) => (
           <div
             className={`category ${

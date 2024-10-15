@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./IngredientsModal.css";
+import { useTranslation } from "react-i18next";
 
 const IngredientsModal = ({ product, onClose, addToCart }) => {
+  const { t } = useTranslation();
   const [ingredients, setIngredients] = useState([]);
+
   useEffect(() => {
     if (product && Array.isArray(product.group_modifications)) {
       // Отримуємо інгредієнти з об'єкта product
@@ -50,10 +53,10 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className="modal-modif">
+      <div className="modal-modif-content">
         <h2>{product.product_name}</h2>
-        <h3>Інгредієнти</h3>
+        <h3>{t("description.ingredientsModal.Title")}</h3>
         <ul>
           {ingredients.map((ingredient) => (
             <li key={ingredient.ingredient_id}>
@@ -82,10 +85,10 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
         </ul>
         <div className="modal-buttons-ing">
           <button onClick={handleAddToCart} className="modal-button-add">
-            Додати до кошика
+            {t("description.ingredientsModal.AddToCart")}
           </button>
           <button onClick={onClose} className="modal-button-close">
-            Закрити
+            {t("description.ingredientsModal.Close")}
           </button>
         </div>
       </div>

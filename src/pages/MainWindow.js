@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./MainWindow.css";
+import "../styles/MainWindow.css";
 import { useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
-import axios from "axios";
-import Categories from "./components/categories/Categories";
-import Products from "./components/products/Products";
-import IngredientsModal from "./components/ingredientsModal/IngredientsModal";
-import ShoppingCart from "./components/shoppingCart/ShoppingCart";
-
-// axios.defaults.baseURL = "http://localhost:8080/api";
-axios.defaults.baseURL = "http://192.168.0.222:3535/api";
+import axios from "../api";
+import Categories from "../components/categories/Categories";
+import Products from "../components/products/Products";
+import IngredientsModal from "../components/ingredientsModal/IngredientsModal";
+import ShoppingCart from "../components/shoppingCart/ShoppingCart";
+import { useTranslation } from "react-i18next";
 
 function MainWindow() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -20,6 +18,7 @@ function MainWindow() {
 
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
   const updateCartItems = () => {
     axios
       .get("/order")
@@ -72,7 +71,7 @@ function MainWindow() {
     const orderData = {
       id: product.product_id,
       quantity: 1,
-      modifications: product.modifications,
+      modifications: product.modifications || [],
     };
 
     axios
@@ -90,7 +89,7 @@ function MainWindow() {
     <div className="menu-container">
       <div className="back-button-container">
         <button className="back-button" onClick={() => navigate("/")}>
-          <FaAngleLeft /> Назад
+          <FaAngleLeft /> {t("description.mainWindow.Back")}
         </button>
       </div>
       <div className="categories-container">

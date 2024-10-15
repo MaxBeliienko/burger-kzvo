@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
-import "./PaymentWindow.css";
-import axios from "axios";
-import PaymentModal from "./PaymentModal"; // Импортируем модальное окно
+import "../styles/PaymentWindow.css";
+import axios from "../api";
+import PaymentModal from "../components/paymentModal/PaymentModal"; // Импортируем модальное окно
+import { useTranslation } from "react-i18next";
 
 function PaymentWindow() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function PaymentWindow() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для модального окна
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -140,11 +142,11 @@ function PaymentWindow() {
     <div className="payment_container">
       <div className="payment-back-button-container">
         <button className="back-button" onClick={() => navigate("/main")}>
-          <FaAngleLeft /> Назад
+          <FaAngleLeft /> {t("description.paymentWindow.Back")}
         </button>
       </div>
       <div>
-        <h2 className="order-h2">Ваше замовлення</h2>
+        <h2 className="order-h2">{t("description.paymentWindow.YourOrder")}</h2>
         <div className="order-table-container">
           <table className="order-table">
             <tbody>
@@ -155,6 +157,12 @@ function PaymentWindow() {
                   </td>
                   <td className="order-item-name" lang="uk">
                     {item.productName}
+                    {/*Перевірка на наявність модифікацій */}
+                    {item.modifications && item.modifications.length > 0 && (
+                      <span className="order-item-name-span">
+                        {t("description.paymentWindow.AddedIngredients")}
+                      </span>
+                    )}
                   </td>
                   <td className="order-item-count">
                     <button onClick={() => handleDecreaseQuantity(item)}>
@@ -166,7 +174,8 @@ function PaymentWindow() {
                     </button>
                   </td>
                   <td className="order-item-price">
-                    {item.price * item.count} грн
+                    {item.price * item.count}{" "}
+                    {t("description.paymentWindow.Currency")}
                   </td>
                   <td className="order-item-delete">
                     <button onClick={() => handleDeleteItem(index)}>×</button>
@@ -177,14 +186,17 @@ function PaymentWindow() {
           </table>
         </div>
         <div className="payment-total-amount">
-          Сума до сплати: <span className="span-total">{totalPrice} грн</span>
+          {t("description.paymentWindow.AmountDue")}:{" "}
+          <span className="span-total">
+            {totalPrice} {t("description.paymentWindow.Currency")}
+          </span>
         </div>
         <button
           className={`payment-button ${order.length === 0 ? "disabled" : ""}`}
           onClick={handlePayment}
           disabled={order.length === 0}
         >
-          Оплатити
+          {t("description.paymentWindow.Pay")}
         </button>
       </div>
 
@@ -192,14 +204,14 @@ function PaymentWindow() {
         <div className={`modal active`}>
           <div className="modal-content">
             <p className="modal-header">
-              Ви впевнені, що хочете видалити товар?
+              {t("description.paymentWindow.SureRemove")}
             </p>
             <div className="modal-buttons">
               <button className="modal-button" onClick={handleConfirmDelete}>
-                Так
+                {t("description.paymentWindow.Yes")}
               </button>
               <button className="modal-button" onClick={handleCancelDelete}>
-                Ні
+                {t("description.paymentWindow.No")}
               </button>
             </div>
           </div>

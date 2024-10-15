@@ -1,4 +1,4 @@
-.modal {
+.modal-modif {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.modal-content {
+.modal-modif-content {
   background: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -19,16 +19,16 @@
   max-width: 400px;
 }
 
-.modal-content h2 {
+.modal-modif-content h2 {
   text-align: center;
 }
 
-.modal-content ul {
+.modal-modif-content ul {
   list-style: none;
   padding: 0;
 }
 
-.modal-content > ul > li {
+.modal-modif-content > ul > li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,7 +36,7 @@
   font-size: 1.17em;
 }
 
-.modal-content > ul > li > button {
+.modal-modif-content > ul > li > button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;

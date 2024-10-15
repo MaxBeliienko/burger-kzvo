@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import axios from "axios";
+import axios from "../../api";
 import "./Products.css";
+import { useTranslation } from "react-i18next";
 
 const Products = ({ selectedCategory, openProductModal }) => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const sliderRef = useRef(null);
+  const { t } = useTranslation();
 
   const settings = {
     className: "center",
@@ -49,7 +51,9 @@ const Products = ({ selectedCategory, openProductModal }) => {
           >
             <img src={product.photo} alt={product.product_name} />
             <div className="product-name">{product.product_name}</div>
-            <div className="product-price">{product.price} ГРН</div>
+            <div className="product-price">
+              {product.price} {t("description.products.Currency")}
+            </div>
           </div>
         ))}
       </Slider>
