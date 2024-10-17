@@ -42,9 +42,20 @@ function MainWindow() {
     setSelectedCategory(category);
   };
 
+  // const handleOpenProductModal = (product) => {
+  //   setSelectedProduct(product);
+  //   setShowModal(true);
+  // };
+
   const handleOpenProductModal = (product) => {
-    setSelectedProduct(product);
-    setShowModal(true);
+    if (product.group_modifications && product.group_modifications.length > 0) {
+      // Якщо є модифікації, відкриваємо модальне вікно
+      setSelectedProduct(product);
+      setShowModal(true);
+    } else {
+      // Якщо модифікацій немає, додаємо продукт прямо в корзину
+      handleAddToCart(product);
+    }
   };
 
   const handleCloseModal = () => {
