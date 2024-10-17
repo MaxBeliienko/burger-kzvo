@@ -57,7 +57,7 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
     <div className="modal-modif">
       <div className="modal-modif-content">
         <h2>{product.product_name}</h2>
-        <h3>{t("description.ingredientsModal.Title")}</h3>
+        <h3>{t("description.ingredientsModal.Title")}:</h3>
         <ul>
           {ingredients.map((ingredient) => (
             <li key={ingredient.ingredient_id}>

@@ -9,6 +9,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const { t } = useTranslation();
+  console.log(total);
 
   useEffect(() => {
     axios
@@ -39,48 +40,10 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
     setShowDeleteModal(true);
   };
 
-  // const handleConfirmDelete = () => {
-  //   if (deleteIndex !== null) {
-  //     const itemToDelete = cartItems[deleteIndex];
-  //     axios
-  //       .delete(`/order/delete/${itemToDelete.productId}`)
-  //       .then((response) => {
-  //         console.log("Item successfully deleted");
-  //         const updatedItems = selectedItems.filter(
-  //           (i) => i.product_id !== itemToDelete.productId
-  //         );
-  //         setSelectedItems(updatedItems);
-  //         localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
-  //         const updatedCartItems = cartItems.filter(
-  //           (item) => item.productId !== itemToDelete.productId
-  //         );
-  //         setCartItems(updatedCartItems);
-  //         const updatedTotal = updatedCartItems.reduce(
-  //           (total, item) => total + item.price * item.count,
-  //           0
-  //         );
-  //         setTotal(updatedTotal);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error deleting item:", error);
-  //       })
-  //       .finally(() => {
-  //         setDeleteIndex(null);
-  //         setShowDeleteModal(false);
-  //       });
-  //   }
-  // };
-
   const handleConfirmDelete = () => {
     if (deleteIndex !== null) {
       const itemToDelete = cartItems[deleteIndex];
-      console.log(itemToDelete.modification);
-
-      const deleteData = {
-        modification: itemToDelete.modification,
-      };
-
-      console.log(deleteData);
+      const deleteData = { modification: itemToDelete.modification || [] };
 
       axios
         .delete(`/order/delete/modification/${itemToDelete.productId}`, {
@@ -88,27 +51,16 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
         })
         .then((response) => {
           console.log("Item successfully deleted");
-          const updatedItems = selectedItems.filter(
-            (i) =>
-              i.product_id !== itemToDelete.productId ||
-              i.modification !== itemToDelete.modification
-          );
-          setSelectedItems(updatedItems);
-          localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
-          const updatedCartItems = cartItems.filter(
-            (item) =>
-              item.productId !== itemToDelete.productId ||
-              item.modification !== itemToDelete.modification
-          );
-          setCartItems(updatedCartItems);
-          const updatedTotal = updatedCartItems.reduce(
-            (total, item) => total + item.price * item.count,
-            0
-          );
-          setTotal(updatedTotal);
+          // Оновлюємо замовлення після видалення
+          return axios.get("/order");
+        })
+        .then((response) => {
+          console.log("Order data updated:", response.data);
+          setCartItems(response.data.products);
+          setTotal(response.data.totalPrice);
         })
         .catch((error) => {
-          console.error("Error deleting item:", error);
+          console.error("Error deleting item or fetching order:", error);
         })
         .finally(() => {
           setDeleteIndex(null);
@@ -127,41 +79,46 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
       i.productId === item.productId ? { ...i, count: i.count + 1 } : i
     );
     setCartItems(updatedItems);
-    const updatedTotal = updatedItems.reduce(
-      (total, item) => total + item.price * item.count,
-      0
-    );
-    setTotal(updatedTotal);
 
     axios
       .put(`/order`, { id: item.productId, quantity: item.count + 1 })
       .then((response) => {
         console.log("Quantity successfully increased");
+        // Оновлюємо дані після зміни кількості
+        return axios.get("/order");
+      })
+      .then((response) => {
+        setCartItems(response.data.products);
+        setTotal(response.data.totalPrice);
       })
       .catch((error) => {
-        console.error("Error increasing quantity:", error);
+        console.error("Error updating quantity or fetching order:", error);
       });
   };
 
   const handleDecreaseQuantity = (item) => {
     if (item.count > 1) {
+      // Оновлюємо локальні дані
       const updatedItems = cartItems.map((i) =>
         i.productId === item.productId ? { ...i, count: i.count - 1 } : i
       );
       setCartItems(updatedItems);
-      const updatedTotal = updatedItems.reduce(
-        (total, item) => total + item.price * item.count,
-        0
-      );
-      setTotal(updatedTotal);
 
+      // Відправляємо запит для оновлення кількості на сервері
       axios
         .put(`/order`, { id: item.productId, quantity: item.count - 1 })
         .then((response) => {
           console.log("Quantity successfully decreased");
+          // Після успішного оновлення кількості отримуємо актуальні дані
+          return axios.get("/order");
+        })
+        .then((response) => {
+          // Оновлюємо замовлення та загальну суму
+          setCartItems(response.data.products);
+          setTotal(response.data.totalPrice);
         })
         .catch((error) => {
-          console.error("Error decreasing quantity:", error);
+          console.error("Error decreasing quantity or fetching order:", error);
         });
     }
   };
@@ -182,8 +139,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
                 {item.productName}
               </div>
               <div>
-                {item.allPrice * item.count}{" "}
-                {t("description.shoppingCart.Currency")}
+                {item.allPrice} {t("description.shoppingCart.Currency")}
               </div>
               <div className="quantity-container">
                 <button

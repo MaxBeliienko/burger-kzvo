@@ -52,16 +52,15 @@ function PaymentWindow() {
     setOrder(updatedItems);
     localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
 
-    const newTotalPrice = updatedItems.reduce(
-      (total, item) => total + item.price * item.count,
-      0
-    );
-    setTotalPrice(newTotalPrice);
-
     axios
       .put(`/order`, { id: item.productId, quantity: item.count + 1 })
       .then((response) => {
         console.log("Quantity successfully increased");
+        // Оновлюємо замовлення після зміни кількості
+        axios.get("/order").then((response) => {
+          setOrder(response.data.products);
+          setTotalPrice(response.data.totalPrice);
+        });
       })
       .catch((error) => {
         console.error("Error increasing count:", error);
@@ -76,16 +75,15 @@ function PaymentWindow() {
       setOrder(updatedItems);
       localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
 
-      const newTotalPrice = updatedItems.reduce(
-        (total, item) => total + item.price * item.count,
-        0
-      );
-      setTotalPrice(newTotalPrice);
-
       axios
         .put(`/order`, { id: item.productId, quantity: item.count - 1 })
         .then((response) => {
           console.log("Quantity successfully decreased");
+          // Оновлюємо замовлення після зміни кількості
+          axios.get("/order").then((response) => {
+            setOrder(response.data.products);
+            setTotalPrice(response.data.totalPrice);
+          });
         })
         .catch((error) => {
           console.error("Error decreasing count:", error);
@@ -98,10 +96,12 @@ function PaymentWindow() {
   };
 
   const handleDeleteItemBackend = (productId, modification) => {
+    const modificationToSend =
+      modification && modification.length > 0 ? modification : [];
     axios
       .delete(`/order/delete/modification/${productId}`, {
         data: {
-          modification,
+          modification: modificationToSend,
         },
       })
       .then((response) => {
@@ -165,11 +165,13 @@ function PaymentWindow() {
                   <td className="order-item-name" lang="uk">
                     {item.productName}
                     {/*Перевірка на наявність модифікацій */}
-                    {item.modifications && item.modifications.length > 0 && (
-                      <span className="order-item-name-span">
-                        {t("description.paymentWindow.AddedIngredients")}
-                      </span>
-                    )}
+                    {item.modifications &&
+                      item.modifications.length > 0 &&
+                      item.modifications.some((mod) => mod.a > 0) && (
+                        <span className="order-item-name-span">
+                          {t("description.paymentWindow.AddedIngredients")}
+                        </span>
+                      )}
                   </td>
                   <td className="order-item-count">
                     <button onClick={() => handleDecreaseQuantity(item)}>
@@ -181,8 +183,7 @@ function PaymentWindow() {
                     </button>
                   </td>
                   <td className="order-item-price">
-                    {item.allPrice * item.count}{" "}
-                    {t("description.paymentWindow.Currency")}
+                    {item.allPrice} {t("description.paymentWindow.Currency")}
                   </td>
                   <td className="order-item-delete">
                     <button onClick={() => handleDeleteItem(index)}>×</button>
