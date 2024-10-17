@@ -13,7 +13,7 @@ function PaymentModal({ isOpen, onClose }) {
     <div className="modal active">
       <div className="modal-content">
         <p className="modal-header">
-          {t("description.paymentModal.Instruction")}
+          {t("description.paymentModal.Instructions")}
         </p>
         <div className="loader-container">
           <div className="newtons-cradle">

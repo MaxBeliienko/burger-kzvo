@@ -21,6 +21,12 @@ const Categories = ({ onSelectCategory, selectedCategory }) => {
   }, []);
 
   useEffect(() => {
+    if (sliderRef.current && categories.length > 0) {
+      sliderRef.current.slickGoTo(0); // Повертаємо слайдер на перший слайд після завантаження
+    }
+  }, [categories]);
+
+  useEffect(() => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(0); // Повертаємо слайдер на початок
     }

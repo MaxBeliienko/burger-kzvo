@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./IngredientsModal.css";
 import { useTranslation } from "react-i18next";
 
 const IngredientsModal = ({ product, onClose, addToCart }) => {
   const { t } = useTranslation();
   const [ingredients, setIngredients] = useState([]);
+  console.log(product);
 
   useEffect(() => {
     if (product && Array.isArray(product.group_modifications)) {
@@ -23,7 +24,7 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
   const handleQuantityChange = (ingredientId, change) => {
     // Змінюємо кількість вибраного інгредієнта
     const updatedIngredients = ingredients.map((ingredient) =>
-      ingredient.modification_id === ingredientId
+      ingredient.dish_modification_id === ingredientId
         ? { ...ingredient, amount: Math.max(0, ingredient.amount + change) }
         : ingredient
     );
@@ -65,7 +66,7 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
                 <button
                   className="quantity-btn"
                   onClick={() =>
-                    handleQuantityChange(ingredient.modification_id, -1)
+                    handleQuantityChange(ingredient.dish_modification_id, -1)
                   }
                 >
                   -
@@ -74,7 +75,7 @@ const IngredientsModal = ({ product, onClose, addToCart }) => {
                 <button
                   className="quantity-btn"
                   onClick={() =>
-                    handleQuantityChange(ingredient.modification_id, 1)
+                    handleQuantityChange(ingredient.dish_modification_id, 1)
                   }
                 >
                   +

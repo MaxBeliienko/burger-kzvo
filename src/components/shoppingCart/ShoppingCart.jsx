@@ -39,20 +39,66 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
     setShowDeleteModal(true);
   };
 
+  // const handleConfirmDelete = () => {
+  //   if (deleteIndex !== null) {
+  //     const itemToDelete = cartItems[deleteIndex];
+  //     axios
+  //       .delete(`/order/delete/${itemToDelete.productId}`)
+  //       .then((response) => {
+  //         console.log("Item successfully deleted");
+  //         const updatedItems = selectedItems.filter(
+  //           (i) => i.product_id !== itemToDelete.productId
+  //         );
+  //         setSelectedItems(updatedItems);
+  //         localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
+  //         const updatedCartItems = cartItems.filter(
+  //           (item) => item.productId !== itemToDelete.productId
+  //         );
+  //         setCartItems(updatedCartItems);
+  //         const updatedTotal = updatedCartItems.reduce(
+  //           (total, item) => total + item.price * item.count,
+  //           0
+  //         );
+  //         setTotal(updatedTotal);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error deleting item:", error);
+  //       })
+  //       .finally(() => {
+  //         setDeleteIndex(null);
+  //         setShowDeleteModal(false);
+  //       });
+  //   }
+  // };
+
   const handleConfirmDelete = () => {
     if (deleteIndex !== null) {
       const itemToDelete = cartItems[deleteIndex];
+      console.log(itemToDelete.modification);
+
+      const deleteData = {
+        modification: itemToDelete.modification,
+      };
+
+      console.log(deleteData);
+
       axios
-        .delete(`/order/delete/${itemToDelete.productId}`)
+        .delete(`/order/delete/modification/${itemToDelete.productId}`, {
+          data: deleteData,
+        })
         .then((response) => {
           console.log("Item successfully deleted");
           const updatedItems = selectedItems.filter(
-            (i) => i.product_id !== itemToDelete.productId
+            (i) =>
+              i.product_id !== itemToDelete.productId ||
+              i.modification !== itemToDelete.modification
           );
           setSelectedItems(updatedItems);
           localStorage.setItem("selectedItems", JSON.stringify(updatedItems));
           const updatedCartItems = cartItems.filter(
-            (item) => item.productId !== itemToDelete.productId
+            (item) =>
+              item.productId !== itemToDelete.productId ||
+              item.modification !== itemToDelete.modification
           );
           setCartItems(updatedCartItems);
           const updatedTotal = updatedCartItems.reduce(
@@ -125,7 +171,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
       <h2>{t("description.shoppingCart.Title")}</h2>
       <ul>
         {cartItems.map((item, index) => (
-          <li key={item.productId} className="cart-item">
+          <li key={index} className="cart-item">
             <img
               src={item.productPhoto}
               alt={item.productName}
@@ -136,7 +182,7 @@ const ShoppingCart = ({ selectedItems, setSelectedItems, updateCartItems }) => {
                 {item.productName}
               </div>
               <div>
-                {item.price * item.count}{" "}
+                {item.allPrice * item.count}{" "}
                 {t("description.shoppingCart.Currency")}
               </div>
               <div className="quantity-container">

@@ -33,6 +33,20 @@ i18n
           },
         },
       },
+      est: {
+        translation: {
+          description: {
+            startWindow: startWindowText.est,
+            mainWindow: mainWindowText.est,
+            paymentWindow: paymentWindowText.est,
+            paymentModal: paymentModalText.est,
+            paymentResult: paymentResultText.est,
+            products: productsText.est,
+            shoppingCart: shoppingCartText.est,
+            ingredientsModal: ingredientsModalText.est,
+          },
+        },
+      },
     },
   });
 

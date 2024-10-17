@@ -97,9 +97,13 @@ function PaymentWindow() {
     setDeleteIndex(index);
   };
 
-  const handleDeleteItemBackend = (productId) => {
+  const handleDeleteItemBackend = (productId, modification) => {
     axios
-      .delete(`/order/delete/${productId}`)
+      .delete(`/order/delete/modification/${productId}`, {
+        data: {
+          modification,
+        },
+      })
       .then((response) => {
         console.log("Item deleted successfully");
         // Оновлюємо список замовлень
@@ -120,8 +124,11 @@ function PaymentWindow() {
 
   const handleConfirmDelete = () => {
     if (deleteIndex !== null) {
-      const productIdToDelete = order[deleteIndex].productId;
-      handleDeleteItemBackend(productIdToDelete);
+      const productToDelete = order[deleteIndex];
+      const productIdToDelete = productToDelete.productId;
+      const modificationToDelete = productToDelete.modification || [];
+
+      handleDeleteItemBackend(productIdToDelete, modificationToDelete);
       const updatedOrder = [...order];
       updatedOrder.splice(deleteIndex, 1);
       setOrder(updatedOrder);
@@ -174,7 +181,7 @@ function PaymentWindow() {
                     </button>
                   </td>
                   <td className="order-item-price">
-                    {item.price * item.count}{" "}
+                    {item.allPrice * item.count}{" "}
                     {t("description.paymentWindow.Currency")}
                   </td>
                   <td className="order-item-delete">
